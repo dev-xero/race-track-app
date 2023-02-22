@@ -18,6 +18,12 @@ package com.example.racetracker.ui.test
 
 import com.example.racetracker.ui.RaceParticipant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class RaceParticipantTest {
@@ -28,4 +34,13 @@ class RaceParticipantTest {
         initialProgress = 0,
         progressIncrement = 1
     )
+
+    @Test
+    fun raceParticipant_RaceStarted_ProgressUpdated() = runTest {
+        val expectedProgress = 1
+        launch { raceParticipant.run() }
+        advanceTimeBy(raceParticipant.progressDelayMillis)
+        runCurrent()
+        assertEquals(expectedProgress, raceParticipant.currentProgress)
+    }
 }
