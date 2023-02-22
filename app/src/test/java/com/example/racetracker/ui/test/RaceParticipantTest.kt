@@ -43,4 +43,15 @@ class RaceParticipantTest {
         runCurrent()
         assertEquals(expectedProgress, raceParticipant.currentProgress)
     }
+
+    @Test
+    fun raceParticipant_RaceFinished_ProgressUpdated() = runTest {
+        val expectedProgress = 100
+        launch {
+            raceParticipant.run()
+            advanceTimeBy(raceParticipant.progressDelayMillis * raceParticipant.maxProgress)
+            runCurrent()
+            assertEquals(expectedProgress, raceParticipant.currentProgress)
+        }
+    }
 }
